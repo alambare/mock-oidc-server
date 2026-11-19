@@ -24,6 +24,13 @@ from jose import jwt
 # Configuration
 ISSUER = os.environ.get("ISSUER", "http://localhost:3000")
 AVAILABLE_SCOPES = os.environ.get("SCOPES", "")
+try:
+    DEFAULT_CLAIMS = json.loads(os.environ.get("DEFAULT_CLAIMS", "{}"))
+except json.JSONDecodeError as exc:
+    raise ValueError("DEFAULT_CLAIMS must be valid JSON") from exc
+if not isinstance(DEFAULT_CLAIMS, dict):
+    raise ValueError("DEFAULT_CLAIMS must be a JSON object")
+
 app = FastAPI(root_path=urlparse(ISSUER).path.rstrip("/"))
 
 # Configure static files
@@ -195,7 +202,7 @@ async def authorize(
             "request_id": request_id,
             "client_id": client_id,
             "scopes": scopes,
-            "claims": {},
+            "claims": DEFAULT_CLAIMS,
         },
     )
 
@@ -256,7 +263,7 @@ async def token_form(request: Request):
         {
             "request": request,
             "token": None,
-            "claims": {},
+            "claims": DEFAULT_CLAIMS,
         },
     )
 

@@ -39,6 +39,7 @@ The server can be configured using environment variables:
 - `ISSUER`: The OIDC issuer URL, including path when served at non-root (default: http://localhost:8888)
 - `SCOPES`: Additional scopes to support (comma-separated)
 - `PORT`: The port to run on (default: 8888)
+- `DEFAULT_CLAIMS`: JSON object prefilled in the custom claims editor on both forms (default: `{}`). Claims can be edited or removed before submitting.
 
 ## Usage
 
